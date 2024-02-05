@@ -230,9 +230,17 @@ const RecipeForm = (props) => {
         </>
       )}
       {!previewSource && (
-        <label className="addListItem" htmlFor="imageUpload">
-          <span className="material-symbols-outlined">add</span>
-          <p className="addText">Upload an image</p>
+        <label htmlFor="imageUpload">
+          <div
+            className={
+              emptyFields.includes("previewSource")
+                ? "addListItem error"
+                : "addListItem"
+            }
+          >
+            <span className="material-symbols-outlined">add</span>
+            <p className="addText">Upload an image</p>
+          </div>
         </label>
       )}
       <input
@@ -244,11 +252,11 @@ const RecipeForm = (props) => {
         value={fileInputState || ""}
         className={emptyFields.includes("previewSource") ? "error" : ""}
       />
+      {error && <div className="error">{error}</div>}
       <button className="save">Save Recipe</button>
       <button className="cancel" onClick={handleCancel}>
         Cancel
       </button>
-      {error && <div className="error">{error}</div>}
     </form>
   );
 };

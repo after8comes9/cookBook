@@ -15,6 +15,8 @@ const Home = () => {
     setRecipeFocus((recipeFocus) => !recipeFocus);
   }
 
+  console.log(recipeFocus);
+
   useEffect(() => {
     const fetchRecipes = async () => {
       const response = await fetch("http://localhost:4000/api/recipes");
@@ -33,14 +35,25 @@ const Home = () => {
       {!addRecipe && (
         <div className="recipes">
           {recipes &&
-            recipes.map((recipe) => (
-              <RecipeDetails
-                toggleForm={toggleForm}
-                recipe={recipe}
-                key={recipe._id}
-                getSelectedKey={(key) => setRecipeFocus(key)}
-              />
-            ))}
+            recipes.map((recipe) =>
+              recipe._id === recipeFocus._id ? (
+                <RecipeDetails
+                  isActive={true}
+                  toggleForm={toggleForm}
+                  recipe={recipe}
+                  key={recipe._id}
+                  getSelectedKey={(key) => setRecipeFocus(key)}
+                />
+              ) : (
+                <RecipeDetails
+                  isActive={false}
+                  toggleForm={toggleForm}
+                  recipe={recipe}
+                  key={recipe._id}
+                  getSelectedKey={(key) => setRecipeFocus(key)}
+                />
+              ),
+            )}
           <div onClick={toggleForm}>
             <span className="material-symbols-outlined">add</span>
             <p>Add recipe</p>
