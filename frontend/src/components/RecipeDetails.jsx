@@ -1,6 +1,7 @@
 import { useRecipesContext } from "../hooks/useRecipesContext";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import PropTypes from "prop-types";
+import { motion } from "framer-motion";
 
 const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   const { dispatch } = useRecipesContext();
@@ -29,19 +30,24 @@ const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   };
 
   return (
-    <div className="recipe-details" onClick={max}>
-      <div className="coverImage">
-        <img src={recipe.image_secure_url} alt="recipe" />
-      </div>
-      <h4>{recipe.title}</h4>
-      <p>
+    <motion.div layout className="recipe-details" onClick={max}>
+      <motion.div layout className="coverImage">
+        <motion.img layout src={recipe.image_secure_url} alt="recipe" />
+      </motion.div>
+      <motion.h4 layout>{recipe.title}</motion.h4>
+      <motion.p layout>
         added&nbsp;
         {formatDistanceToNow(new Date(recipe.createdAt), {
           addSuffix: true,
         })}
-      </p>
+      </motion.p>
       {isActive && (
-        <>
+        <motion.div
+          layout="position"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="moreDetails"
+        >
           <strong>Ingredients: </strong>
           <ul>
             {recipe.ingredients.map((ingredient, i) => (
@@ -55,21 +61,23 @@ const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
               <li key={i}>{instruction}</li>
             ))}
           </ol>
-        </>
+        </motion.div>
       )}
-      <span
+      <motion.span
+        layout
         className="material-symbols-outlined delete"
         onClick={handleClickDelete}
       >
         delete
-      </span>
-      <span
+      </motion.span>
+      <motion.span
+        layout
         className="material-symbols-outlined edit"
         onClick={handleClickEdit}
       >
         edit
-      </span>
-    </div>
+      </motion.span>
+    </motion.div>
   );
 };
 
