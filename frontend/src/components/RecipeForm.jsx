@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useRecipesContext } from "../hooks/useRecipesContext.jsx";
 import PropTypes from "prop-types";
+import { useAuthContext } from "../hooks/useAuthContext.jsx";
 
 const RecipeForm = (props) => {
   const { dispatch } = useRecipesContext();
+  const { user } = useAuthContext();
 
   const initialState = [""];
 
@@ -21,6 +23,10 @@ const RecipeForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      setError("You must be logged in");
+      return;
+    }
 
     const recipe = { title, ingredients, instructions, previewSource };
 
@@ -29,6 +35,7 @@ const RecipeForm = (props) => {
       body: JSON.stringify(recipe),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
     });
     const json = await response.json();

@@ -2,15 +2,22 @@ import { useRecipesContext } from "../hooks/useRecipesContext";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
+import { useAuthContext } from "../hooks/useAuthContext.jsx";
 
 const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   const { dispatch } = useRecipesContext();
+  const { user } = useAuthContext();
 
   const handleClickDelete = async () => {
+    if (!user) {
+      return;
+    }
+
     const response = await fetch(
       "http://localhost:4000/api/recipes/" + recipe._id,
       {
         method: "DELETE",
+        headers: { Authorization: `Bearer ${user.token}` },
       },
     );
     const json = await response.json();

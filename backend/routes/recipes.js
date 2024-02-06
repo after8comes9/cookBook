@@ -6,8 +6,12 @@ const {
   deleteRecipe,
   updateRecipe,
 } = require("../controllers/recipeController");
+const requireAuth = require("../middleware/requireAuth");
 
 const router = express.Router();
+
+// require auth for all recipe routes
+router.use(requireAuth);
 
 // GET all recipes
 router.get("/", getRecipes);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRecipesContext } from "../hooks/useRecipesContext.jsx";
+import { useAuthContext } from "../hooks/useAuthContext.jsx";
 
 // components
 import RecipeDetails from "../components/RecipeDetails";
@@ -9,6 +10,7 @@ const Home = () => {
   const { recipes, dispatch } = useRecipesContext();
   const [addRecipe, setAddRecipe] = useState(false);
   const [recipeFocus, setRecipeFocus] = useState("");
+  const { user } = useAuthContext();
 
   function toggleForm() {
     setAddRecipe((addRecipe) => !addRecipe);
@@ -19,7 +21,9 @@ const Home = () => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const response = await fetch("http://localhost:4000/api/recipes");
+      const response = await fetch("http://localhost:4000/api/recipes", {
+        headers: { Authorization: `Bearer ${user.token}` },
+      });
       const json = await response.json();
 
       if (response.ok) {
@@ -27,7 +31,9 @@ const Home = () => {
       }
     };
 
-    fetchRecipes();
+    if (user) {
+      fetchRecipes();
+    }
   }, [dispatch]);
 
   return (

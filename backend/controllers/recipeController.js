@@ -4,7 +4,9 @@ const { cloudinary } = require("../utils/cloudinary");
 
 // get all recipes
 const getRecipes = async (req, res) => {
-  const recipes = await Recipe.find({}).sort({ createdAt: -1 });
+  const user_id = req.user._id;
+
+  const recipes = await Recipe.find({ user_id }).sort({ createdAt: -1 });
 
   res.status(200).json(recipes);
 };
@@ -62,7 +64,9 @@ const createRecipe = async (req, res) => {
     console.log(uploadedImage);
     const image_secure_url = uploadedImage.secure_url;
     const image_public_id = uploadedImage.public_id;
+    const user_id = req.user._id;
     const recipe = await Recipe.create({
+      user_id,
       title,
       ingredients: cleanIngredients,
       instructions: cleanInstructions,
@@ -131,7 +135,6 @@ const updateRecipe = async (req, res) => {
     const uploadedImage = await cloudinary.uploader.upload(previewSource, {
       upload_preset: "ml_default",
     });
-    const options = { returnDocument: "after" };
     console.log(uploadedImage);
     const image_secure_url = uploadedImage.secure_url;
     const image_public_id = uploadedImage.public_id;
