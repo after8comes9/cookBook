@@ -4,6 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose").default;
 const recipeRoutes = require("./routes/recipes");
+const userRoutes = require("./routes/user");
 
 // express app
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json({ limit: "50mb" }));
 
 // routes
 app.use("/api/recipes", recipeRoutes);
+app.use("/api/user", userRoutes);
 
 // connect to db
 const port = process.env.PORT || 4000;
