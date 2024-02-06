@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext.jsx";
+import toast from "react-hot-toast";
 
 export const useLogin = () => {
   const [error, setError] = useState(null);
@@ -30,6 +31,7 @@ export const useLogin = () => {
       dispatch({ type: "LOGIN", payload: json });
 
       setIsLoading(false);
+      toast.success("logged in succesfully");
     }
   };
 

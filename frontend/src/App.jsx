@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Navbar from "./components/Navbar";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const { user } = useAuthContext();
@@ -14,6 +15,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Navbar />
+        <Toaster position="top-center" reverseOrder={false} />
         <div className="pages">
           <Routes>
             <Route

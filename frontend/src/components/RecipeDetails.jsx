@@ -3,6 +3,7 @@ import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import toast from "react-hot-toast";
 
 const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   const { dispatch } = useRecipesContext();
@@ -24,6 +25,7 @@ const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
 
     if (response.ok) {
       dispatch({ type: "DELETE_RECIPE", payload: json });
+      toast.success("recipe deleted");
     }
   };
 

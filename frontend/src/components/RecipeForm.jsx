@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRecipesContext } from "../hooks/useRecipesContext.jsx";
 import PropTypes from "prop-types";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
+import toast from "react-hot-toast";
 
 const RecipeForm = (props) => {
   const { dispatch } = useRecipesContext();
@@ -56,6 +57,7 @@ const RecipeForm = (props) => {
       dispatch({ type: "CREATE_RECIPE", payload: json });
       setIsLoading(false);
       props.toggleForm();
+      toast.success("recipe saved");
     }
   };
 
