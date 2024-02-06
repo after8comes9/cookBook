@@ -20,9 +20,12 @@ const RecipeForm = (props) => {
   const [emptyFields, setEmptyFields] = useState([]);
   const [fileInputState, setFileInputState] = useState("");
   const [previewSource, setPreviewSource] = useState(props.image || "");
+  const [isLoading, setIsLoading] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     if (!user) {
       setError("You must be logged in");
       return;
@@ -42,6 +45,7 @@ const RecipeForm = (props) => {
     if (!response.ok) {
       setError(json.error);
       setEmptyFields(json.emptyFields);
+      setIsLoading(false);
     }
     if (response.ok) {
       /* setEmptyFields([]);
@@ -50,6 +54,7 @@ const RecipeForm = (props) => {
             setIngredients([""]);
             setInstructions([""]);*/
       dispatch({ type: "CREATE_RECIPE", payload: json });
+      setIsLoading(false);
       props.toggleForm();
     }
   };
@@ -254,13 +259,16 @@ const RecipeForm = (props) => {
         id="imageUpload"
         type="file"
         name="image"
+        accept="image/*"
         style={{ visibility: "hidden" }}
         onChange={handleFileInputChange}
         value={fileInputState || ""}
         className={emptyFields.includes("previewSource") ? "error" : ""}
       />
       {error && <div className="error">{error}</div>}
-      <button className="save">Save Recipe</button>
+      <button className="save" disabled={isLoading}>
+        Save Recipe {isLoading && <span className="loader"></span>}
+      </button>
       <button className="cancel" onClick={handleCancel}>
         Cancel
       </button>
