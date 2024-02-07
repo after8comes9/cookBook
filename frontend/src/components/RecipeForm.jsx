@@ -57,12 +57,13 @@ const RecipeForm = (props) => {
       dispatch({ type: "CREATE_RECIPE", payload: json });
       setIsLoading(false);
       props.toggleForm();
-      toast.success("recipe saved");
+      toast.success("recipe saved successfully");
     }
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const recipe = { title, ingredients, instructions, previewSource };
 
@@ -81,10 +82,13 @@ const RecipeForm = (props) => {
     if (!response.ok) {
       setError(json.error);
       setEmptyFields(json.emptyFields);
+      setIsLoading(false);
     }
     if (response.ok) {
       dispatch({ type: "UPDATE_RECIPE", payload: json });
+      setIsLoading(false);
       props.toggleForm();
+      toast.success("recipe updated successfully");
     }
   };
 
