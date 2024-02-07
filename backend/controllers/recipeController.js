@@ -61,7 +61,6 @@ const createRecipe = async (req, res) => {
     const uploadedImage = await cloudinary.uploader.upload(previewSource, {
       upload_preset: "ml_default",
     });
-    console.log(uploadedImage);
     const image_secure_url = uploadedImage.secure_url;
     const image_public_id = uploadedImage.public_id;
     const user_id = req.user._id;
@@ -135,7 +134,6 @@ const updateRecipe = async (req, res) => {
     const uploadedImage = await cloudinary.uploader.upload(previewSource, {
       upload_preset: "ml_default",
     });
-    console.log(uploadedImage);
     const image_secure_url = uploadedImage.secure_url;
     const image_public_id = uploadedImage.public_id;
     const recipe = await Recipe.findOneAndUpdate(

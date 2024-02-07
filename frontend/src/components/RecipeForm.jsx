@@ -73,6 +73,7 @@ const RecipeForm = (props) => {
         body: JSON.stringify(recipe),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
         },
       },
     );

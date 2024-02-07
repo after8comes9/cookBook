@@ -15,10 +15,12 @@ const Home = () => {
 
   function toggleForm() {
     setAddRecipe((addRecipe) => !addRecipe);
-    // setRecipeFocus((recipeFocus) => !recipeFocus);
   }
 
-  console.log(recipeFocus);
+  function openForm() {
+    setRecipeFocus("");
+    toggleForm();
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -43,7 +45,7 @@ const Home = () => {
   return (
     <div className="home">
       {!addRecipe && (
-        <button className="addRecipeBtn" type="button" onClick={toggleForm}>
+        <button className="addRecipeBtn" type="button" onClick={openForm}>
           <span className="material-symbols-outlined">add</span>
           <p>Add recipe</p>
         </button>
