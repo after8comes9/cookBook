@@ -4,10 +4,22 @@ import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 import { useAuthContext } from "../hooks/useAuthContext.jsx";
 import toast from "react-hot-toast";
+import { useRef } from "react";
 
 const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   const { dispatch } = useRecipesContext();
   const { user } = useAuthContext();
+
+  const dialogRef = useRef(null);
+
+  function toggleDialog() {
+    if (!dialogRef.current) {
+      return;
+    }
+    dialogRef.current.hasAttribute("Open")
+      ? dialogRef.current.close()
+      : dialogRef.current.showModal();
+  }
 
   const handleClickDelete = async () => {
     if (!user) {
@@ -30,12 +42,26 @@ const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
   };
 
   const max = () => {
-    isActive ? getSelectedKey("") : getSelectedKey(recipe);
+    if (!isActive) {
+      getSelectedKey(recipe);
+    } else {
+      getSelectedKey("");
+    }
   };
 
-  const handleClickEdit = () => {
-    toggleForm();
-    getSelectedKey(recipe);
+  let deleteBtn = (e) => {
+    toggleDialog();
+    e.stopPropagation();
+  };
+
+  let confirmDeleteBtn = (e) => {
+    handleClickDelete();
+    e.stopPropagation();
+  };
+
+  let cancelBtn = (e) => {
+    toggleDialog();
+    e.stopPropagation();
   };
 
   return (
@@ -75,17 +101,34 @@ const RecipeDetails = ({ recipe, getSelectedKey, toggleForm, isActive }) => {
       <motion.span
         layout
         className="material-symbols-outlined delete"
-        onClick={handleClickDelete}
+        onClick={deleteBtn}
       >
         delete
       </motion.span>
       <motion.span
         layout
         className="material-symbols-outlined edit"
-        onClick={handleClickEdit}
+        onClick={(e) => {
+          getSelectedKey(recipe);
+          toggleForm();
+          e.stopPropagation();
+        }}
       >
         edit
       </motion.span>
+      <dialog
+        ref={dialogRef}
+        onClick={(e) => {
+          if (e.currentTarget === e.target) {
+            toggleDialog();
+            e.stopPropagation();
+          }
+        }}
+      >
+        Are you sure you want to delete your {recipe.title} recipe?
+        <button onClick={confirmDeleteBtn}>delete</button>
+        <button onClick={cancelBtn}>cancel</button>
+      </dialog>
     </motion.div>
   );
 };

@@ -165,24 +165,26 @@ const RecipeForm = (props) => {
       <ul>
         {ingredients.map((ingredient, i) => (
           <li key={i}>
-            <input
-              type="string"
-              onChange={(e) => {
-                let newIngredient = e.target.value;
-                addIngredient(i, newIngredient);
-              }}
-              value={ingredient}
-              className={emptyFields.includes("ingredients") ? "error" : ""}
-            />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setIngredients(removeIngredient(i));
-              }}
-              className="material-symbols-outlined trash"
-            >
-              delete
-            </button>
+            <div className="listContent">
+              <input
+                type="string"
+                onChange={(e) => {
+                  let newIngredient = e.target.value;
+                  addIngredient(i, newIngredient);
+                }}
+                value={ingredient}
+                className={emptyFields.includes("ingredients") ? "error" : ""}
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIngredients(removeIngredient(i));
+                }}
+                className="material-symbols-outlined trash"
+              >
+                delete
+              </button>
+            </div>
           </li>
         ))}
       </ul>
@@ -201,24 +203,26 @@ const RecipeForm = (props) => {
       <ol>
         {instructions.map((instruction, i) => (
           <li key={i}>
-            <input
-              type="string"
-              onChange={(e) => {
-                let newInstruction = e.target.value;
-                addInstruction(i, newInstruction);
-              }}
-              value={instruction}
-              className={emptyFields.includes("instructions") ? "error" : ""}
-            />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setInstructions(removeInstruction(i));
-              }}
-              className="material-symbols-outlined trash"
-            >
-              delete
-            </button>
+            <div className="listContent">
+              <input
+                type="string"
+                onChange={(e) => {
+                  let newInstruction = e.target.value;
+                  addInstruction(i, newInstruction);
+                }}
+                value={instruction}
+                className={emptyFields.includes("instructions") ? "error" : ""}
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setInstructions(removeInstruction(i));
+                }}
+                className="material-symbols-outlined trash"
+              >
+                delete
+              </button>
+            </div>
           </li>
         ))}
       </ol>

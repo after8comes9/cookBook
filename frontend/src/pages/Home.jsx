@@ -10,16 +10,19 @@ const Home = () => {
   const { recipes, dispatch } = useRecipesContext();
   const [addRecipe, setAddRecipe] = useState(false);
   const [recipeFocus, setRecipeFocus] = useState("");
+  const [isLoading, setIsLoading] = useState(null);
   const { user } = useAuthContext();
 
   function toggleForm() {
     setAddRecipe((addRecipe) => !addRecipe);
-    setRecipeFocus((recipeFocus) => !recipeFocus);
+    // setRecipeFocus((recipeFocus) => !recipeFocus);
   }
 
   console.log(recipeFocus);
 
   useEffect(() => {
+    setIsLoading(true);
+
     const fetchRecipes = async () => {
       const response = await fetch("http://localhost:4000/api/recipes", {
         headers: { Authorization: `Bearer ${user.token}` },
@@ -28,6 +31,7 @@ const Home = () => {
 
       if (response.ok) {
         dispatch({ type: "SET_RECIPES", payload: json });
+        setIsLoading(false);
       }
     };
 
@@ -39,6 +43,12 @@ const Home = () => {
   return (
     <div className="home">
       {!addRecipe && (
+        <button className="addRecipeBtn" type="button" onClick={toggleForm}>
+          <span className="material-symbols-outlined">add</span>
+          <p>Add recipe</p>
+        </button>
+      )}
+      {!addRecipe && !isLoading && (
         <div className="recipes">
           {recipes &&
             recipes.map((recipe) =>
@@ -60,10 +70,6 @@ const Home = () => {
                 />
               ),
             )}
-          <div onClick={toggleForm}>
-            <span className="material-symbols-outlined">add</span>
-            <p>Add recipe</p>
-          </div>
         </div>
       )}
       {addRecipe && (
